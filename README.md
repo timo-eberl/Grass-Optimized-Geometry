@@ -1,3 +1,42 @@
+# Optimized Geometry Grass
+
+A fork of Acerola's grass with an improved Geometry Shader which outperforms the Model grass most of the time.
+
+## Benchmarks:
+
+> Settings: 2.250.000 blades of grass, high LOD = 15 verts, low LOD = 9 verts, 1920x1080
+
+| PC Specs                              | Model                       | Geometry                    |
+|---------------------------------------|-----------------------------|-----------------------------|
+| i7-4790K, GTX 970                     | 73 FPS                      | 55 FPS                      |
+| i7-4790K, GTX 970 (low LOD = 3 Verts) | 75 FPS                      | 73 FPS                      |
+| i7-5960X, GTX 980 Ti                  | 76 FPS                      | 81 FPS                      |
+| R5 5600G, RX 6700 XT                  | 292 FPS                     | 311 FPS                     |
+| R5 5600G, RX 6700 XT (on Linux)       | 340 FPS                     | 154 FPS                     |
+| R9 7950X, RTX 4080 (CPU Bottleneck)   | 400 FPS, 8% GPU Utilization | 660 FPS, 6% GPU Utilization |
+
+## My changes
+
+- Geometry
+  - Bigges performance improvement: Correct a mistake where for every triangle all 3 verts were added -> for 10 triangles you only need 12 verts, not 30
+  - Add frustum culling: Culled blades do not generate geometry
+  - Add LODs: Low LOD blades do generate less geometry
+- Model
+  - `numChunks = 3`, because having it any higher resulted in worse performance on all test machines. Anything below 3 was broken.
+- Model and Geometry
+  - Consider 2.250.000 blades of grass
+    - Model: `chunkDensity = 15`
+    - Geometry: `scale = 15`
+  - Use 15 Verts for close blades
+  - Use 9 verts for far (20m) blades (using 3 verts results in a CPU bottleneck for Model)
+  - Disabled terrain, because on most GPUs it was buggy
+- Material changes like grass color, blade width, blade height, fog (nothing that matters for performance)
+
+---
+
+Original README starts here
+---
+
 # Grass
 
 by Garrett Gunnell
