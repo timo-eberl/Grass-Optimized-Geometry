@@ -96,7 +96,7 @@ Shader "Unlit/GeometryGrass" {
                 const uint lowLod = idHash < lowLodChance;
                 
                 const uint vertexCountMax = 15;
-                const uint vertexCountLow = 3;
+                const uint vertexCountLow = 9;
                 const uint vertexCount = lowLod ? vertexCountLow : vertexCountMax;
 
                 g2f v[vertexCountMax];
